@@ -20,12 +20,14 @@ jobs:
 
     - name: Install dependencies
       run: npm install
+      working-directory: ./client
 
     - name: Run tests
       run: npm test
-
+      working-directory: ./client
     - name: Package application
       run: npm run build
+      working-directory: ./client
 
     - name: Copy files via SSH
       uses: appleboy/scp-action@v0.1.1
@@ -33,7 +35,7 @@ jobs:
         host: ${{ secrets.AWS_EC2_IP }}
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "path/to/your/build/*"
+        source: "./client/*"
         target: "/home/${{ secrets.SSH_USERNAME }}/app/"
 
     - name: Deploy via SSH
